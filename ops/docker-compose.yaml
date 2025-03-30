@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  game-of-life:
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile
+    container_name: game_of_life
+    tty: true
+    stdin_open: true
