@@ -1,13 +1,11 @@
 package com.atulgirishkumar.engine.impl;
 
 import com.atulgirishkumar.engine.EvolutionStrategy;
+import com.atulgirishkumar.engine.rules.Rule;
 import com.atulgirishkumar.entity.Board;
 import com.atulgirishkumar.entity.Cell;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author atulgirishkumar
@@ -16,6 +14,12 @@ public class ClassicGameOfLife implements EvolutionStrategy {
 
     private static final int[][] NEIGHBOUR_DIRECTIONS =
             {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+    private final List<Rule> ruleSet;
+
+    public ClassicGameOfLife(List<Rule> ruleSet) {
+        this.ruleSet = ruleSet;
+    }
 
     @Override
     public Set<Cell> computeNextGeneration(Board board) {
@@ -27,7 +31,11 @@ public class ClassicGameOfLife implements EvolutionStrategy {
             Cell cell = entry.getKey();
             int liveNeighbourCount = entry.getValue();
             if (!board.isWithinBounds(cell)) continue;
-            if ((liveNeighbourCount == 2 && liveCells.contains(cell)) || liveNeighbourCount == 3) nextGen.add(cell);
+            for (Rule rule : ruleSet) {
+                if (rule.applyRule(liveCells, liveNeighbourCount, cell)) {
+                    nextGen.add(cell);
+                }
+            }
         }
 
         return nextGen;
