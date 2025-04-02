@@ -2,11 +2,16 @@ package com.atulgirishkumar.engine.impl;
 
 import com.atulgirishkumar.engine.EvolutionStrategy;
 import com.atulgirishkumar.engine.UniverseMode;
+import com.atulgirishkumar.engine.rules.Rule;
+import com.atulgirishkumar.engine.rules.impl.Rule1;
+import com.atulgirishkumar.engine.rules.impl.Rule2;
 import com.atulgirishkumar.entity.Board;
 import com.atulgirishkumar.entity.Cell;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +26,10 @@ class ClassicGameOfLifeTest {
 
     @BeforeAll
     static void setup() {
-        evolutionStrategy = new ClassicGameOfLife();
+        List<Rule> ruleSet = new ArrayList<>();
+        ruleSet.add(new Rule1());
+        ruleSet.add(new Rule2());
+        evolutionStrategy = new ClassicGameOfLife(ruleSet);
     }
 
     @Test
